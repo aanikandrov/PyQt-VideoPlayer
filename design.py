@@ -10,7 +10,7 @@ from PyQt5.QtCore import QTimer, Qt, QThread, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QGraphicsView, QGraphicsScene,
                              QGraphicsPixmapItem, QVBoxLayout, QWidget,
-                             QLabel, QPushButton)
+                             QLabel, QPushButton, QButtonGroup)
 
 from PyQt5.QtCore import QThreadPool
 
@@ -25,29 +25,22 @@ import Video_QGraphics
 import Video_Thread
 
 
-def start_video_stream(label: QLabel, mode, path):
-    if (mode):
-        thread = Video_Thread.Class_VideoCaptureThread(label, mode, "")
-    else:
-        thread = Video_Thread.Class_VideoCaptureThread(label, mode, path)
-
-    thread.change_pixmap_signal.connect(
-        lambda image: label.setPixmap(QPixmap.fromImage(image)))
-    return thread
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(415, 319)
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.main_radioLightTheme = QtWidgets.QRadioButton(self.centralwidget)
-        self.main_radioLightTheme.setGeometry(QtCore.QRect(20, 260, 82, 17))
-        self.main_radioLightTheme.setObjectName("main_radioLightTheme")
-        self.main_radioDarkTheme = QtWidgets.QRadioButton(self.centralwidget)
-        self.main_radioDarkTheme.setGeometry(QtCore.QRect(20, 280, 82, 17))
-        self.main_radioDarkTheme.setObjectName("main_radioDarkTheme_2")
+        # self.main_radioLightTheme = QtWidgets.QRadioButton(self.centralwidget)
+        # self.main_radioLightTheme.setGeometry(QtCore.QRect(20, 260, 82, 17))
+        # self.main_radioLightTheme.setObjectName("main_radioLightTheme")
+        # self.main_radioDarkTheme = QtWidgets.QRadioButton(self.centralwidget)
+        # self.main_radioDarkTheme.setGeometry(QtCore.QRect(20, 280, 82, 17))
+        # self.main_radioDarkTheme.setObjectName("main_radioDarkTheme_2")
+
         self.main_pushFiles = QtWidgets.QPushButton(self.centralwidget)
         self.main_pushFiles.setGeometry(QtCore.QRect(320, 260, 75, 23))
         self.main_pushFiles.setStyleSheet("border-top: 1px solid rgb(0, 0, 0);\n"
@@ -165,27 +158,28 @@ class Ui_MainWindow(object):
         self.tab5_radioFile.setObjectName("tab5_radioFile")
         self.tabVideo.addTab(self.tab_5, "")
 
-        self.tab_6 = QtWidgets.QWidget()
-        self.tab_6.setObjectName("tab_5")
-        self.tab6_label = QtWidgets.QLabel(self.tab_6)
-        self.tab6_label.setGeometry(QtCore.QRect(20, 20, 270, 170))
-        self.tab6_label.setText("")
-        self.tab6_label.setObjectName("tab6_label")
-        self.tab6_pushPlay = QtWidgets.QPushButton(self.tab_6)
-        self.tab6_pushPlay.setGeometry(QtCore.QRect(300, 30, 50, 25))
-        self.tab6_pushPlay.setObjectName("tab6_pushPlay")
-        self.tab6_radioCamera = QtWidgets.QRadioButton(self.tab_6)
-        self.tab6_radioCamera.setGeometry(QtCore.QRect(300, 60, 70, 25))
-        self.tab6_radioCamera.setObjectName("tab6_radioCamera")
-        self.tab6_radioFile = QtWidgets.QRadioButton(self.tab_6)
-        self.tab6_radioFile.setGeometry(QtCore.QRect(300, 90, 70, 25))
-        self.tab6_radioFile.setObjectName("tab5_radioFile")
+        # self.tab_6 = QtWidgets.QWidget()
+        # self.tab_6.setObjectName("tab_6")
+        # self.tab6_label = QtWidgets.QLabel(self.tab_6)
+        # self.tab6_label.setGeometry(QtCore.QRect(20, 20, 270, 170))
+        # self.tab6_label.setText("")
+        # self.tab6_label.setObjectName("tab6_label")
+        # self.tab6_pushPlay = QtWidgets.QPushButton(self.tab_6)
+        # self.tab6_pushPlay.setGeometry(QtCore.QRect(300, 30, 50, 25))
+        # self.tab6_pushPlay.setObjectName("tab6_pushPlay")
+        # self.tab6_radioCamera = QtWidgets.QRadioButton(self.tab_6)
+        # self.tab6_radioCamera.setGeometry(QtCore.QRect(300, 60, 70, 25))
+        # self.tab6_radioCamera.setObjectName("tab6_radioCamera")
+        # self.tab6_radioFile = QtWidgets.QRadioButton(self.tab_6)
+        # self.tab6_radioFile.setGeometry(QtCore.QRect(300, 90, 70, 25))
+        # self.tab6_radioFile.setObjectName("tab5_radioFile")
         # self.tabVideo.addTab(self.tab_6, "")
 
 
         self.tabVideo.raise_()
-        self.main_radioLightTheme.raise_()
-        self.main_radioDarkTheme.raise_()
+        # self.main_radioLightTheme.raise_()
+        # self.main_radioDarkTheme.raise_()
+
         self.main_pushFiles.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -199,8 +193,8 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.main_radioLightTheme.setText(_translate("MainWindow", "Light Theme"))
-        self.main_radioDarkTheme.setText(_translate("MainWindow", "Dark Theme"))
+        # self.main_radioLightTheme.setText(_translate("MainWindow", "Light Theme"))
+        # self.main_radioDarkTheme.setText(_translate("MainWindow", "Dark Theme"))
         self.main_pushFiles.setText(_translate("MainWindow", "FILES"))
         self.tab1_push2.setText(_translate("MainWindow", "Button 2"))
         self.tab1_push1.setText(_translate("MainWindow", "Button 1"))
@@ -217,10 +211,10 @@ class Ui_MainWindow(object):
         self.tab5_radioFile.setText(_translate("MainWindow", "File"))
         self.tabVideo.setTabText(self.tabVideo.indexOf(self.tab_5), _translate("MainWindow", "Tab 5"))
 
-        self.tab6_pushPlay.setText(_translate("MainWindow", "Play"))
-        self.tab6_radioCamera.setText(_translate("MainWindow", "Camera"))
-        self.tab6_radioFile.setText(_translate("MainWindow", "File"))
-        self.tabVideo.setTabText(self.tabVideo.indexOf(self.tab_6), _translate("MainWindow", "Tab 6"))
+        # self.tab6_pushPlay.setText(_translate("MainWindow", "Play"))
+        # self.tab6_radioCamera.setText(_translate("MainWindow", "Camera"))
+        # self.tab6_radioFile.setText(_translate("MainWindow", "File"))
+        # self.tabVideo.setTabText(self.tabVideo.indexOf(self.tab_6), _translate("MainWindow", "Tab 6"))
 
     def functions(self, MainWindow):
         self.tab1_push1.setStyleSheet("background-color: white;")
@@ -229,6 +223,12 @@ class Ui_MainWindow(object):
         self.tab1_push2.clicked.connect(self.on_pushButton_2_clicked)
 
         self.main_pushFiles.clicked.connect(self.open_files)
+
+        # self.button_group = QButtonGroup(self)
+        # self.button_group.addButton(self.main_radioLightTheme)
+        # self.button_group.addButton(self.main_radioDarkTheme)
+        # self.button_group.buttonClicked.connect(self.changeTheme)
+        # self.main_radioLightTheme.setChecked(True)
 
         self.tab2_horizontalSlider.setRange(-10, 10)
         self.tab2_horizontalSlider.valueChanged.connect(self.update_line_edit)
@@ -240,17 +240,12 @@ class Ui_MainWindow(object):
         self.tab2_spinBox.valueChanged.connect(self.textEdit_change)
         self.tab2_lineEdit.setReadOnly(True)
 
-        self.main_radioLightTheme.setChecked(True)
-        self.main_radioLightTheme.toggled.connect(self.changeTheme)
-        self.main_radioDarkTheme.toggled.connect(self.changeTheme)
-
         self.tab5_radioCamera.setChecked(True)
         self.tab5_radioCamera.toggled.connect(self.changeMode_tab5)
         self.tab5_radioFile.toggled.connect(self.changeMode_tab5)
 
-        self.tab6_radioCamera.toggled.connect(self.start_camera_capture)
-        self.tab6_radioFile.toggled.connect(self.start_file_capture)
-
+        # self.tab6_radioCamera.toggled.connect(self.start_camera_capture)
+        # self.tab6_radioFile.toggled.connect(self.start_file_capture)
 
 
 
@@ -278,8 +273,7 @@ class Ui_MainWindow(object):
         self.mode = True
         self.video_path_3 = "D:/Рабочий стол/vid4.mp4"
 
-
-        self.video_thread = start_video_stream(self.tab5_label,
+        self.video_thread = Video_Thread.start_video_stream(self.tab5_label,
                                                self.mode,
                                                self.video_path_3)
 
@@ -291,14 +285,14 @@ class Ui_MainWindow(object):
             self.tab5_label.clear()
             self.mode = True
             self.video_thread.stop_capture()
-            self.video_thread = start_video_stream(self.tab5_label,
+            self.video_thread = Video_Thread.start_video_stream(self.tab5_label,
                                                    self.mode,
                                                    self.video_path_3)
         elif self.tab5_radioFile.isChecked():
             self.mode = False
             self.tab5_label.clear()
             self.video_thread.stop_capture()
-            self.video_thread = start_video_stream(self.tab5_label,
+            self.video_thread = Video_Thread.start_video_stream(self.tab5_label,
                                                    self.mode,
                                                    self.video_path_3)
 
@@ -312,60 +306,10 @@ class Ui_MainWindow(object):
 
     ## --- --- ---- -- - -- -- - - -  -
 
-    video_capture_runnable = None
-    thread_pool = QThreadPool()
-    video_capture_worker = None
+    # video_capture_runnable = None
+    # thread_pool = QThreadPool()
+    # video_capture_worker = None
 
-    def video_tab6(self, MainWindow):
-
-
-
-
-
-        self.mode = True
-        self.video_path_3 = "D:/Рабочий стол/vid4.mp4"
-
-
-
-
-
-    def start_camera_capture(self):
-        self.tab6_label.clear()
-        if(self.video_capture_worker):
-            self.video_capture_worker.stop_capture()
-        self.tab6_label.clear()
-
-
-        if (not self.video_capture_worker
-                or not self.video_capture_worker.run_flag):
-
-            self.video_capture_worker = Video_Pool.VideoCaptureWorker(mode=True)
-
-            self.video_capture_worker.change_pixmap_signal.connect(self.update_image)
-            runnable = Video_Pool.VideoCaptureRunnable(self.video_capture_worker)
-            self.video_capture_worker.start_capture()
-            self.thread_pool.start(runnable)
-
-    def start_file_capture(self):
-        self.tab6_label.clear()
-        if (self.video_capture_worker):
-            self.video_capture_worker.stop_capture()
-        self.tab6_label.clear()
-
-        if (not self.video_capture_worker
-                or not self.video_capture_worker.run_flag):
-
-            file_path = "D:/Рабочий стол/vid4.mp4"
-            self.video_capture_worker = Video_Pool.VideoCaptureWorker(mode=False, path=file_path)
-
-            self.video_capture_worker.change_pixmap_signal.connect(self.update_image)
-            runnable = Video_Pool.VideoCaptureRunnable(self.video_capture_worker)
-            self.video_capture_worker.start_capture()
-            self.thread_pool.start(runnable)
-
-    def update_image(self, image):
-        if not image.isNull():
-            self.tab6_label.setPixmap(QPixmap.fromImage(image))
 
     ## --- --- ---- -- - -- -- - - -  -
 
@@ -374,6 +318,7 @@ class Ui_MainWindow(object):
             self.setStyleSheet("background-color: white;")
         elif self.main_radioDarkTheme.isChecked():
             self.setStyleSheet("background-color: darkgray;")
+
 
     def textEdit_change(self, a):
         self.tab2_textEdit.setPlainText(f'{a}')

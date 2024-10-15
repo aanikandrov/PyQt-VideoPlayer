@@ -1,7 +1,19 @@
 import cv2
 from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtGui import QImage
+from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QLabel
+
+
+def start_video_stream(label: QLabel, mode, path):
+    if (mode):
+        thread = Class_VideoCaptureThread(label, mode, "")
+    else:
+        thread = Class_VideoCaptureThread(label, mode, path)
+
+    thread.change_pixmap_signal.connect(
+        lambda image: label.setPixmap(QPixmap.fromImage(image)))
+    return thread
+
 
 class Class_VideoCaptureThread(QThread):
     change_pixmap_signal = pyqtSignal(QImage)
@@ -44,7 +56,6 @@ class Class_VideoCaptureThread(QThread):
     def play_capture(self):
         self.is_run = True
         self.pause = False
-        self.start()
 
     def stop_capture(self):
         self.is_run = False
