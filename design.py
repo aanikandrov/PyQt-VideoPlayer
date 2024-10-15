@@ -304,7 +304,7 @@ class Ui_MainWindow(object):
 
     def play_tab5(self):
         #self.video_thread.start_capture()
-        self.video_thread.toggle_capture()
+        self.video_thread.pause_capture()
 
     def close_tab5(self, event):
         self.video_thread.stop_capture()

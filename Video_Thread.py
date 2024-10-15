@@ -8,7 +8,7 @@ class Class_VideoCaptureThread(QThread):
 
     def __init__(self, label: QLabel, mode=True, path=""):
         super().__init__()
-        self.run_flag = False
+        self.is_run = False
         self.mode = mode
         self.path = path
         self.label = label
@@ -20,7 +20,7 @@ class Class_VideoCaptureThread(QThread):
         else:
             cap = cv2.VideoCapture(self.path)
 
-        while self.run_flag:
+        while self.is_run:
             if not self.pause:
                 ret, frame = cap.read()
                 if ret:
@@ -41,27 +41,23 @@ class Class_VideoCaptureThread(QThread):
                     break
         cap.release()
 
-    def start_capture(self):
-        self.run_flag = True
+    def play_capture(self):
+        self.is_run = True
         self.pause = False
         self.start()
 
     def stop_capture(self):
-        self.run_flag = False
+        self.is_run = False
         self.quit()
         self.wait()
 
-    def toggle_capture(self):
-        if not self.run_flag:
-            self.run_flag = True
+    def pause_capture(self):
+        if not self.is_run:
+            self.is_run = True
             self.pause = False
             self.start()
         else:
             self.pause = not self.pause
 
-    def pause_capture(self):
-        if self.pause:
-            self.pause = False
-        else:
-            self.pause = True
+
 
