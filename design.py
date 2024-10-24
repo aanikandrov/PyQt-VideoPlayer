@@ -158,22 +158,26 @@ class Ui_MainWindow(object):
         self.tab5_radioFile.setObjectName("tab5_radioFile")
         self.tabVideo.addTab(self.tab_5, "")
 
-        # self.tab_6 = QtWidgets.QWidget()
-        # self.tab_6.setObjectName("tab_6")
-        # self.tab6_label = QtWidgets.QLabel(self.tab_6)
-        # self.tab6_label.setGeometry(QtCore.QRect(20, 20, 270, 170))
-        # self.tab6_label.setText("")
-        # self.tab6_label.setObjectName("tab6_label")
-        # self.tab6_pushPlay = QtWidgets.QPushButton(self.tab_6)
-        # self.tab6_pushPlay.setGeometry(QtCore.QRect(300, 30, 50, 25))
-        # self.tab6_pushPlay.setObjectName("tab6_pushPlay")
-        # self.tab6_radioCamera = QtWidgets.QRadioButton(self.tab_6)
-        # self.tab6_radioCamera.setGeometry(QtCore.QRect(300, 60, 70, 25))
-        # self.tab6_radioCamera.setObjectName("tab6_radioCamera")
-        # self.tab6_radioFile = QtWidgets.QRadioButton(self.tab_6)
-        # self.tab6_radioFile.setGeometry(QtCore.QRect(300, 90, 70, 25))
-        # self.tab6_radioFile.setObjectName("tab5_radioFile")
-        # self.tabVideo.addTab(self.tab_6, "")
+        self.tab_6 = QtWidgets.QWidget()
+        self.tab_6.setObjectName("tab_6")
+        self.tab6_label = QtWidgets.QLabel(self.tab_6)
+        self.tab6_label.setGeometry(QtCore.QRect(20, 20, 270, 170))
+        self.tab6_label.setText("")
+        self.tab6_label.setObjectName("tab6_label")
+        self.tab6_pushPlay = QtWidgets.QPushButton(self.tab_6)
+        self.tab6_pushPlay.setGeometry(QtCore.QRect(300, 30, 50, 25))
+        self.tab6_pushPlay.setObjectName("tab6_pushPlay")
+        self.tab6_radioCamera = QtWidgets.QRadioButton(self.tab_6)
+        self.tab6_radioCamera.setGeometry(QtCore.QRect(300, 60, 70, 25))
+        self.tab6_radioCamera.setObjectName("tab6_radioCamera")
+        self.tab6_radioFile = QtWidgets.QRadioButton(self.tab_6)
+        self.tab6_radioFile.setGeometry(QtCore.QRect(300, 90, 70, 25))
+        self.tab6_radioFile.setObjectName("tab5_radioFile")
+        self.tabVideo.addTab(self.tab_6, "")
+
+        self.tab6_pushPause = QtWidgets.QPushButton(self.tab_6)
+        self.tab6_pushPause.setGeometry(QtCore.QRect(300, 120, 50, 25))
+        self.tab6_pushPause.setObjectName("tab6_pushPause")
 
 
         self.tabVideo.raise_()
@@ -211,10 +215,11 @@ class Ui_MainWindow(object):
         self.tab5_radioFile.setText(_translate("MainWindow", "File"))
         self.tabVideo.setTabText(self.tabVideo.indexOf(self.tab_5), _translate("MainWindow", "Tab 5"))
 
-        # self.tab6_pushPlay.setText(_translate("MainWindow", "Play"))
-        # self.tab6_radioCamera.setText(_translate("MainWindow", "Camera"))
-        # self.tab6_radioFile.setText(_translate("MainWindow", "File"))
-        # self.tabVideo.setTabText(self.tabVideo.indexOf(self.tab_6), _translate("MainWindow", "Tab 6"))
+        self.tab6_pushPlay.setText(_translate("MainWindow", "Play"))
+        self.tab6_pushPause.setText(_translate("MainWindow", "Pause"))
+        self.tab6_radioCamera.setText(_translate("MainWindow", "Camera"))
+        self.tab6_radioFile.setText(_translate("MainWindow", "File"))
+        self.tabVideo.setTabText(self.tabVideo.indexOf(self.tab_6), _translate("MainWindow", "Tab 6"))
 
     def functions(self, MainWindow):
         self.tab1_push1.setStyleSheet("background-color: white;")
@@ -244,25 +249,28 @@ class Ui_MainWindow(object):
         self.tab5_radioCamera.toggled.connect(self.changeMode_tab5)
         self.tab5_radioFile.toggled.connect(self.changeMode_tab5)
 
-        # self.tab6_radioCamera.toggled.connect(self.start_camera_capture)
-        # self.tab6_radioFile.toggled.connect(self.start_file_capture)
+        # self.tab6_radioCamera.setChecked(True)
+
+        self.tab6_radioCamera.clicked.connect(self.tab6_changeMode)
+        self.tab6_radioFile.clicked.connect(self.tab6_changeMode)
+        ## self.tab6_radioFile.toggled.connect(self.start_file_capture)
 
 
 
     def video_tab3(self, MainWindow):
-        video_path = "D:/Рабочий стол/vid4.mp4"
-        self.video_label = Video_QLabel.Class_Video_QLabel(video_path, self.tab3_label, self)
+        self.video_path_3 = "D:/Рабочий стол/Метрол ML/vid4.mp4"
+        self.video_label = Video_QLabel.Class_Video_QLabel(self.video_path_3, self.tab3_label, self)
 
         self.tab3_pushPlay.clicked.connect(self.video_label.play)
         self.tab3_pushRestart.clicked.connect(self.video_label.restart)
 
     # --- --- --- --- --- --- --- --- --- --- --- ---
     def video_tab4(self, MainWindow):
-        video_path = "D:/Рабочий стол/vid4.mp4"
+        self.video_path_3 = "D:/Рабочий стол/Метрол ML/vid4.mp4"
         self.tab4_graphicsView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.tab4_graphicsView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.video_player = Video_QGraphics.Class_Video_QGraphics(video_path, self.tab4_graphicsView)
+        self.video_player = Video_QGraphics.Class_Video_QGraphics(self.video_path_3, self.tab4_graphicsView)
         self.tab4_pushPlay.clicked.connect(self.video_player.play)
         self.tab4_pushRestart.clicked.connect(self.video_player.restart)
 
@@ -271,7 +279,7 @@ class Ui_MainWindow(object):
 
     def video_tab5(self, MainWindow):
         self.mode = True
-        self.video_path_3 = "D:/Рабочий стол/vid4.mp4"
+        self.video_path_3 = "D:/Рабочий стол/Метрол ML/vid4.mp4"
 
         self.video_thread = Video_Thread.start_video_stream(self.tab5_label,
                                                self.mode,
@@ -309,6 +317,58 @@ class Ui_MainWindow(object):
     # video_capture_runnable = None
     # thread_pool = QThreadPool()
     # video_capture_worker = None
+    def video_tab6(self, MainWindow):
+        self.tab6_pushPlay.setText("b")
+        self.tab6_pushPause.clicked.connect(self.pause_video)
+
+        self.video_path_6 = "D:/Рабочий стол/Метрол ML/vid4.mp4"
+        self.thread_pool = QThreadPool()
+
+        self.webcam_runnable = (Video_Pool.
+                                VideoCaptureRunnable(self.tab6_label,0))
+
+        self.file_runnable = (Video_Pool.
+                              VideoCaptureRunnable(self.tab6_label, self.video_path_6))
+
+    def start_webcam(self):
+        self.stop_file_video()
+        self.stop_webcam()
+        self.webcam_runnable = Video_Pool.VideoCaptureRunnable(self.tab6_label,
+                                                               0)
+        self.thread_pool.start(self.webcam_runnable)
+
+    def stop_webcam(self):
+        if self.webcam_runnable is not None:
+            self.webcam_runnable.stop()
+        self.tab6_label.clear()
+
+    def start_file_video(self):
+        self.stop_file_video()
+        self.stop_webcam()
+        self.file_runnable = Video_Pool.VideoCaptureRunnable(self.tab6_label,
+                                                             self.video_path_6)
+        self.thread_pool.start(self.file_runnable)
+
+
+    def stop_file_video(self):
+        if self.file_runnable is not None:
+            self.file_runnable.stop()
+        self.tab6_label.clear()
+
+    def pause_video(self):
+        if self.webcam_runnable is not None:
+            self.webcam_runnable.pause()
+        if self.file_runnable is not None:
+            self.file_runnable.pause()
+
+    def tab6_changeMode(self):
+        if self.tab6_radioCamera.isChecked():
+            self.tab6_pushPlay.setText("start cam")
+            self.tab6_pushPlay.clicked.connect(self.start_webcam)
+        elif self.tab6_radioFile.isChecked():
+            self.tab6_pushPlay.setText("start vid")
+            self.tab6_pushPlay.clicked.connect(self.start_file_video)
+
 
 
     ## --- --- ---- -- - -- -- - - -  -

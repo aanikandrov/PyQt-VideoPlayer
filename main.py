@@ -17,6 +17,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.video_tab3(self)
         self.video_tab4(self)
         self.video_tab5(self)
+        self.video_tab6(self)
 
     def closeEvent(self, event):
 
