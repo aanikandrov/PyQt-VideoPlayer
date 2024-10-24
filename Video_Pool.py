@@ -1,44 +1,58 @@
-
+import sys
 import cv2
-from PyQt5.QtCore import QRunnable
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtCore import Qt
+import numpy as np
 
-class VideoCaptureRunnable(QRunnable):
-    def __init__(self, label: QLabel, source: str):
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QThreadPool, QRunnable, pyqtSignal, QObject
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import (QApplication, QLabel, QPushButton, QVBoxLayout, QWidget)
+
+
+class VideoCaptureWorker(QObject):
+    change_pixmap_signal = pyqtSignal(QImage)
+
+    def __init__(self, mode=True, path=""):
         super().__init__()
-        self.label = label
-        self.source = source
-        self.is_running = True
-        self.is_paused = False
+        self.run_flag = False
+        self.mode = mode
+        self.path = path
+        self.pause = False
 
     def run(self):
-        cap = cv2.VideoCapture(self.source)
+        cap = cv2.VideoCapture(0 if self.mode else self.path)
 
-        while self.is_running:
-            if not self.is_paused:
+        while self.run_flag:
+            if not self.pause:
                 ret, frame = cap.read()
                 if ret:
-                    # Преобразование BGR в RGB
+                    h, w, _ = frame.shape
                     rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                    h, w, ch = rgb_image.shape
-                    bytes_per_line = ch * w
-                    image = QImage(rgb_image.data, w, h, bytes_per_line, QImage.Format_RGB888)
-
-                    # Обновление QLabel с новым изображением
-                    pixmap = QPixmap.fromImage(image).scaled(self.label.size(), Qt.KeepAspectRatio,
-                                                             Qt.SmoothTransformation)
-                    self.label.setPixmap(pixmap)
-                    cv2.waitKey(30)
-            else:
-                cv2.waitKey(100)
+                    convert_to_Qt_format = QImage(rgb_image.data, w, h, rgb_image.strides[0], QImage.Format_RGB888)
+                    self.change_pixmap_signal.emit(convert_to_Qt_format)
+                    cv2.waitKey(30)  # Примерно 30 FPS
+                else:
+                    # Если видео закончилось
+                    self.change_pixmap_signal.emit(QImage())
+                    break
 
         cap.release()
 
-    def stop(self):
-        self.is_running = False
-    def pause(self):
-        self.is_paused = not self.is_paused
+    def start_capture(self):
+        self.run_flag = True
+        self.pause = False
+
+    def stop_capture(self):
+        self.run_flag = False
+
+    def toggle_pause(self):
+        self.pause = not self.pause
 
 
+class VideoCaptureRunnable(QRunnable):
+    def __init__(self, worker: VideoCaptureWorker):
+        super().__init__()
+        self.worker = worker
+
+    def run(self):
+        self.worker.run()
