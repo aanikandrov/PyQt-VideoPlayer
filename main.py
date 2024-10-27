@@ -17,7 +17,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def closeEvent(self, event):
         self.video_label.clear()
         self.stop_webcam()
-        self.stop_file_video()
+        self.stop_file()
         event.accept()
 
 def main():
