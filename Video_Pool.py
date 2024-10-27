@@ -22,13 +22,18 @@ class VideoCaptureWorker(QRunnable, QObject):
 
     def run(self):
 
-        cap = cv2.VideoCapture(0 if self.mode else self.path)
+        #cap = cv2.VideoCapture(0 if self.mode else self.path)
+        cap = cv2.VideoCapture(0 if self.path == "" else self.path)
 
         while self.run_flag:
             if not self.pause:
                 ret, frame = cap.read()
                 if ret:
                     h, w, _ = frame.shape
+
+                    width = self.label.width()
+                    height = self.label.height()
+
                     rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     image = QImage(rgb_image.data, w, h, rgb_image.strides[0], QImage.Format_RGB888)
                     pixmap = QPixmap.fromImage(image).scaled(self.label.size(), Qt.KeepAspectRatio,
@@ -37,8 +42,11 @@ class VideoCaptureWorker(QRunnable, QObject):
                     cv2.waitKey(30)  # Примерно 30 FPS
                 else:
                     # Если видео закончилось
-                    self.change_pixmap_signal.emit(QImage())
+                    self.pause = True
+                    #self.change_pixmap_signal.emit(QImage())
                     break
+            else:
+                cv2.waitKey(100)
 
         cap.release()
 
