@@ -324,42 +324,46 @@ class Ui_MainWindow(object):
         self.video_path_6 = "D:/Рабочий стол/Метрол ML/vid4.mp4"
         self.thread_pool = QThreadPool()
 
-        self.webcam_runnable = (Video_Pool.
-                                VideoCaptureRunnable(self.tab6_label,0))
+        self.webcam_runnable = Video_Pool.VideoCaptureWorker(self.tab6_label, mode=True,
+                                                             path=0)
 
         self.file_runnable = (Video_Pool.
-                              VideoCaptureRunnable(self.tab6_label, self.video_path_6))
+                              VideoCaptureWorker(self.tab6_label, path=self.video_path_6, mode=False))
+
 
     def start_webcam(self):
+
         self.stop_file_video()
         self.stop_webcam()
-        self.webcam_runnable = Video_Pool.VideoCaptureRunnable(self.tab6_label,
-                                                               0)
+        self.webcam_runnable = Video_Pool.VideoCaptureWorker(self.tab6_label, mode=True,
+                                                               path=0)
         self.thread_pool.start(self.webcam_runnable)
+
+
 
     def stop_webcam(self):
         if self.webcam_runnable is not None:
-            self.webcam_runnable.stop()
+            self.webcam_runnable.stop_capture()
         self.tab6_label.clear()
 
     def start_file_video(self):
         self.stop_file_video()
         self.stop_webcam()
-        self.file_runnable = Video_Pool.VideoCaptureRunnable(self.tab6_label,
-                                                             self.video_path_6)
+        self.file_runnable = Video_Pool.VideoCaptureWorker(self.tab6_label,
+                                                             path=self.video_path_6, mode=False)
         self.thread_pool.start(self.file_runnable)
 
 
     def stop_file_video(self):
         if self.file_runnable is not None:
-            self.file_runnable.stop()
+            self.file_runnable.stop_capture()
         self.tab6_label.clear()
 
     def pause_video(self):
         if self.webcam_runnable is not None:
-            self.webcam_runnable.pause()
+            self.webcam_runnable.toggle_pause()
         if self.file_runnable is not None:
-            self.file_runnable.pause()
+            self.file_runnable.toggle_pause()
 
     def tab6_changeMode(self):
         if self.tab6_radioCamera.isChecked():
