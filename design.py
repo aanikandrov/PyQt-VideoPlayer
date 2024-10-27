@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QThreadPool, Qt
 
-import Video_Pool
+import Video_QThreadPool
 import Video_QLabel
 import Video_QGraphics
 
@@ -150,11 +150,13 @@ class Ui_MainWindow(object):
         self.path = "D:/Рабочий стол/Метрол ML/vid4.mp4"
         self.thread_pool = QThreadPool()
 
-        self.webcam_runnable = Video_Pool.VideoCaptureWorker(self.tab_ThreadPool_label, mode=True,
-                                                             path=0)
+        self.webcam_runnable = Video_QThreadPool.VideoCaptureWorker(self.tab_ThreadPool_label,
+                                                                    mode=True,
+                                                                    path=0)
+        self.file_runnable = Video_QThreadPool.VideoCaptureWorker(self.tab_ThreadPool_label,
+                                                                   path=self.path,
+                                                                   mode=False)
 
-        self.file_runnable = (Video_Pool.
-                              VideoCaptureWorker(self.tab_ThreadPool_label, path=self.path, mode=False))
 
 
 
@@ -162,8 +164,9 @@ class Ui_MainWindow(object):
 
         self.stop_file_video()
         self.stop_webcam()
-        self.webcam_runnable = Video_Pool.VideoCaptureWorker(self.tab_ThreadPool_label, mode=True,
-                                                             path=0)
+        self.webcam_runnable = Video_QThreadPool.VideoCaptureWorker(self.tab_ThreadPool_label,
+                                                                    mode=True,
+                                                                    path=0)
         self.thread_pool.start(self.webcam_runnable)
 
 
@@ -176,7 +179,7 @@ class Ui_MainWindow(object):
     def start_file_video(self):
         self.stop_file_video()
         self.stop_webcam()
-        self.file_runnable = Video_Pool.VideoCaptureWorker(self.tab_ThreadPool_label,
+        self.file_runnable = Video_QThreadPool.VideoCaptureWorker(self.tab_ThreadPool_label,
                                                            path=self.path, mode=False)
         self.thread_pool.start(self.file_runnable)
 
@@ -187,16 +190,14 @@ class Ui_MainWindow(object):
 
     def pause_video(self):
         if self.webcam_runnable is not None:
-            self.webcam_runnable.toggle_pause()
+            self.webcam_runnable.pause()
         if self.file_runnable is not None:
-            self.file_runnable.toggle_pause()
+            self.file_runnable.pause()
 
     def tab6_changeMode(self):
         if self.tab_ThreadPool_radioCamera.isChecked():
-            self.tab_ThreadPool_pushPlay.setText("start cam")
             self.tab_ThreadPool_pushPlay.clicked.connect(self.start_webcam)
         elif self.tab_ThreadPool_radioFile.isChecked():
-            self.tab_ThreadPool_pushPlay.setText("start vid")
             self.tab_ThreadPool_pushPlay.clicked.connect(self.start_file_video)
 
     # --- --- --- --- --- --- --- --- --- --- --- ---

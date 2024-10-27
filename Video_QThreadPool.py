@@ -11,14 +11,14 @@ class VideoCaptureWorker(QRunnable, QObject):
         self.mode = mode
         self.path = path
         self.label = label
-        self.pause = False
+        self.is_pause = False
 
     def run(self):
         #cap = cv2.VideoCapture(0 if self.mode else self.path)
         cap = cv2.VideoCapture(0 if self.path == "" else self.path)
 
         while self.run_flag:
-            if not self.pause:
+            if not self.is_pause:
                 ret, frame = cap.read()
                 if ret:
                     h, w, _ = frame.shape
@@ -31,7 +31,7 @@ class VideoCaptureWorker(QRunnable, QObject):
                     cv2.waitKey(30)  # Примерно 30 FPS
                 else:
                     # Если видео закончилось
-                    self.pause = True
+                    self.is_pause = True
                     break
             else:
                 cv2.waitKey(100)
@@ -41,5 +41,5 @@ class VideoCaptureWorker(QRunnable, QObject):
     def stop_capture(self):
         self.run_flag = False
 
-    def toggle_pause(self):
-        self.pause = not self.pause
+    def pause(self):
+        self.is_pause = not self.is_pause
