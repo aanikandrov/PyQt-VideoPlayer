@@ -21,7 +21,6 @@ class VideoCaptureWorker(QRunnable, QObject):
         self.pause = False
 
     def run(self):
-
         #cap = cv2.VideoCapture(0 if self.mode else self.path)
         cap = cv2.VideoCapture(0 if self.path == "" else self.path)
 
@@ -59,12 +58,3 @@ class VideoCaptureWorker(QRunnable, QObject):
 
     def toggle_pause(self):
         self.pause = not self.pause
-
-
-class VideoCaptureRunnable(QRunnable):
-    def __init__(self, worker: VideoCaptureWorker):
-        super().__init__()
-        self.worker = worker
-
-    def run(self):
-        self.worker.run()
