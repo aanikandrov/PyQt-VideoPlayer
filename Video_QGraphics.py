@@ -5,21 +5,20 @@ from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import QGraphicsPixmapItem
 
-
 class Class_Video_QGraphics:
-    def __init__(self, video_path, graphics_view):
-        self.video_path = video_path
+    def __init__(self, path, graphics_view):
+        self.path = path
         self.graphicsView = graphics_view
-        self.capture = cv2.VideoCapture(self.video_path)
+
+        self.capture = cv2.VideoCapture(self.path)
 
         self.is_end = False
         self.is_paused = True
 
-        self.pixmap_item = QGraphicsPixmapItem()
-
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_frame)
 
+        self.pixmap_item = QGraphicsPixmapItem()
         scene = self.graphicsView.scene() or QGraphicsScene()
         scene.addItem(self.pixmap_item)
         self.graphicsView.setScene(scene)
@@ -36,12 +35,14 @@ class Class_Video_QGraphics:
 
     def update_frame(self):
         if not self.is_paused and self.capture is not None:
-            self.ret, self.frame = self.capture.read()
-            if self.ret:
-                frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+            ret, frame = self.capture.read()
+            if ret:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
                 height, width, channel = frame.shape
                 image = QImage(frame.data, width, height,
                                width * channel, QImage.Format_RGB888)
+
                 pixmap = QPixmap.fromImage(image).scaled(self.graphicsView.size(),
                                                            Qt.KeepAspectRatio,
                                                            Qt.SmoothTransformation)

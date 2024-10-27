@@ -1,8 +1,5 @@
-import sys  # sys нужен для передачи argv в QApplication
-import os  # Отсюда нам понадобятся методы для отображения содержимого директорий
-
+import sys
 from PyQt5 import QtWidgets
-
 import design
 
 
@@ -13,27 +10,15 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.retranslateUi(self)
 
         # функционал
-        self.functions(self)
-        self.video_tab3(self)
-        self.video_tab4(self)
-        self.video_tab5(self)
-        self.video_tab6(self)
+        self.video_tab_QLabel(self)
+        self.video_tab_QGraphicsView(self)
+        self.video_tab_ThreadPool(self)
 
     def closeEvent(self, event):
-
         self.video_label.clear()
-        self.video_thread.stop_capture()
+        self.stop_webcam()
+        self.stop_file_video()
         event.accept()
-
-    def browse_folder(self):
-        self.listWidget.clear()  # На случай, если в списке уже есть элементы
-        directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Выберите папку")
-        # открыть диалог выбора директории и установить значение переменной
-        # равной пути к выбранной директории
-
-        if directory:  # не продолжать выполнение, если пользователь не выбрал директорию
-            for file_name in os.listdir(directory):  # для каждого файла в директории
-                self.listWidget.addItem(file_name)   # добавить файл в listWidget
 
 def main():
     app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication

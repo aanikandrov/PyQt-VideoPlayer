@@ -1,17 +1,10 @@
-import sys
 import cv2
-import numpy as np
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QThreadPool, Qt, QRunnable, pyqtSignal, QObject
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import (QApplication, QLabel, QPushButton, QVBoxLayout, QWidget)
-
+from PyQt5.QtCore import Qt, QRunnable, QObject
+from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtWidgets import QLabel
 
 class VideoCaptureWorker(QRunnable, QObject):
-    # change_pixmap_signal = pyqtSignal(QImage)
-
     def __init__(self, label: QLabel, mode=True, path=""):
         super().__init__()
         self.run_flag = True
@@ -30,9 +23,6 @@ class VideoCaptureWorker(QRunnable, QObject):
                 if ret:
                     h, w, _ = frame.shape
 
-                    width = self.label.width()
-                    height = self.label.height()
-
                     rgb_image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     image = QImage(rgb_image.data, w, h, rgb_image.strides[0], QImage.Format_RGB888)
                     pixmap = QPixmap.fromImage(image).scaled(self.label.size(), Qt.KeepAspectRatio,
@@ -42,16 +32,11 @@ class VideoCaptureWorker(QRunnable, QObject):
                 else:
                     # Если видео закончилось
                     self.pause = True
-                    #self.change_pixmap_signal.emit(QImage())
                     break
             else:
                 cv2.waitKey(100)
 
         cap.release()
-
-    def start_capture(self):
-        self.run_flag = True
-        self.pause = False
 
     def stop_capture(self):
         self.run_flag = False
